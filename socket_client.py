@@ -2,6 +2,7 @@
 import  socket
 import wx
 HOST="localhost"
+
 PORT=56219
 
 MAIN_BG_COLOR=(37,37,37)
@@ -66,6 +67,7 @@ class mainFrame(wx.Frame):
 		SEND_MSG=self.t_input.GetValue()
 		sendStr=NAME+":>>  "+SEND_MSG+"\n"
 		self.t_output.WriteText(sendStr)
+		self.t_input.value=("")
 		#s.send(sendStr)
 		s.send(SEND_MSG)
 
