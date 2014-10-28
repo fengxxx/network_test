@@ -149,8 +149,12 @@ class Client():
 if __name__ == '__main__':
     #a=Client("localhost",9999)
     host=raw_input(">>conect IP adr:")
+    port=raw_input(">>conect port adr:")
+    if port!="" :
+        port =int(port)
+    else: port =9999
     if host!="" :
         
-        a=Client(host,9999)
+        a=Client(host,port)
     else:
         a=Client("localhost",9999)
