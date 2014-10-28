@@ -18,21 +18,26 @@ class Client():
     print ">>fengx client"
     #HOST="127.0.1.1"
     HOST='localhost'
-    HOST=raw_input(">>conect IP adr:")
     if HOST=="":
         #print "localhost"
         HOST='localhost'
     #HOST="192.168.56.101"
     PORT=9999
-    ADDR=(HOST,PORT)
-    TCP_Sock=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-    TCP_Sock.connect(ADDR)
-    
-    name=""
-    
-    print ">>conect to : ",HOST,":",PORT
-    print TCP_Sock.recv(1024)
-    def __init__(self ): 
+    def __init__(self,host,port):
+        self.HOST=host
+        self.PORT=port
+        
+        ADDR=(self.HOST,self.PORT)
+            
+        self.TCP_Sock=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        self.TCP_Sock.connect(ADDR)
+        
+        name=""
+        
+        print ">>conect to : ",self.HOST,":",self.PORT
+        print self.TCP_Sock.recv(1024)
+        self.run()
+    def run(self): 
         while True:
             setFontColor(FONT_COLOR_DEFLUT)
             data=raw_input("")
@@ -87,7 +92,7 @@ class Client():
                         print self.getFile(outFilePath)
                     setFontColor(FONT_COLOR_DEFLUT)
             else:()
-            
+    
     def getMesage(self):
         data_start=self.TCP_Sock.recv(15)
         msg=""
@@ -142,4 +147,10 @@ class Client():
         print self.getMesage()
         setFontColor(FONT_COLOR_DEFLUT)
 if __name__ == '__main__':
-    a=Client()
+    #a=Client("localhost",9999)
+    host=raw_input(">>conect IP adr:")
+    if host!="" :
+        
+        a=Client(host,9999)
+    else:
+        a=Client("localhost",9999)

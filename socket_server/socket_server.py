@@ -6,6 +6,7 @@ import time,os
 
 
 host = "localhost"  
+host = "192.168.3.104"  
 port = 9999  
 addr = (host,port)  
 
@@ -99,6 +100,8 @@ class Servers(SRH):
         self.sendMesge(("regist succeed \n>>Congratulations to you :"+self.name))
 
 if __name__ == '__main__':
-    print 'server is running....'  
+    host=raw_input(">>conect IP adr:")
+    if host=="" : host="localhost"
     server = SocketServer.ThreadingTCPServer(addr,Servers)  
+    print 'server is running....'  
     server.serve_forever()  
