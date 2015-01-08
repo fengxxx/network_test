@@ -8,6 +8,7 @@ import time,os
 host = "localhost"  
 host = "192.168.3.104"  
 port = 9999  
+port = 1234
 
 
 class Servers(SRH):  

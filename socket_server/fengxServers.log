@@ -1,0 +1,23 @@
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:42] DEBUG __init__
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:47] DEBUG server_activate
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:52] DEBUG waiting for request
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:95] INFO Server on 127.0.0.1:61149
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:53] INFO Handling requests, press <Ctrl-C> to quit
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:98] DEBUG creating socket
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:59] DEBUG handle_request
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:100] DEBUG connecting to server
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:105] DEBUG sending data: "Hello, world"
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:63] DEBUG verify_request(<socket._socketobject object at 0x025448F0>, ('127.0.0.1', 61150))
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:109] DEBUG waiting for response
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:67] DEBUG process_request(<socket._socketobject object at 0x025448F0>, ('127.0.0.1', 61150))
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:75] DEBUG finish_request(<socket._socketobject object at 0x025448F0>, ('127.0.0.1', 61150))
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:17] DEBUG __init__
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:22] DEBUG setup
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:26] DEBUG handle
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:30] DEBUG recv()->"Hello, world"
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:111] DEBUG response from server: "Hello, world"
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:35] DEBUG finish
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:114] DEBUG closing socket
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:79] DEBUG close_request(<socket._socketobject object at 0x025448F0>)
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:116] DEBUG done
+Thu, 08 Jan 2015 16:30:18 server_log_test.py[line:59] DEBUG handle_request
