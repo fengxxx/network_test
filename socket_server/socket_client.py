@@ -12,6 +12,30 @@ from _core import*
 # FONT_COLOR_DARKYELLOW=6
 # FONT_COLOR_DEFLUT=FONT_COLOR_WHITE
 #def runClient():
+
+class chatClient():
+    #setFontColor(FONT_COLOR_DEFLUT)
+    setFontColor(FONT_COLOR_DARKGREEN)
+    print ">>fengx client"
+    #HOST="127.0.1.1"
+    HOST='localhost'
+    HOST='192.168.0.99'
+    HOST='localhost'
+    if HOST=="":
+        #print "localhost"
+        HOST='localhost'
+    #HOST="192.168.56.101"
+    PORT=9999
+    def __init__(self,host,port):
+        self.HOST=host
+        self.PORT=port
+        ADDR=(self.HOST,self.PORT)
+        self.TCP_Sock=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        self.TCP_Sock.connect(ADDR)
+        name=""
+        print ">>conect to : ",self.HOST,":",self.PORT
+        #print self.TCP_Sock.recv(1024)
+
 class Client():
     #setFontColor(FONT_COLOR_DEFLUT)
     setFontColor(FONT_COLOR_DARKGREEN)
@@ -155,6 +179,10 @@ class Client():
         print self.getMesage()
         setFontColor(FONT_COLOR_DEFLUT)
 
-
 if __name__ == '__main__':
-    a=Client('localhost',9999)
+    host = "192.168.31.141"
+    if socket.gethostname()=="fengx-PC":
+        host = "192.168.31.141"
+    else:
+        host = "192.168.0.99"
+    a=Client(host,9999)

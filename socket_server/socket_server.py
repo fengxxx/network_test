@@ -2,7 +2,7 @@ import SocketServer
 from SocketServer import StreamRequestHandler as SRH
 from time import ctime
 from _core import*
-import time,os
+import time,os,socket
 serverName="RhinoServer"
 Version=1.0
 connections=[]
@@ -119,7 +119,11 @@ class Servers(SRH):
 
 if __name__ == '__main__':
     print serverName," ",Version," initialization is starting....."
-    host = "localhost"
+    host = "192.168.31.141"
+    if socket.gethostname()=="fengx-PC":
+        host = "192.168.31.141"
+    else:
+        host = "192.168.0.99"
     port = 9999
     addr = (host,port)
     server = SocketServer.ThreadingTCPServer(addr,Servers)
