@@ -1,7 +1,12 @@
+import sys
+
 from ctypes import *
 
-windll.Kernel32.GetStdHandle.restype = c_ulong
-h = windll.Kernel32.GetStdHandle(c_ulong(0xfffffff5))
+if sys.platform=='darwin':
+    print "mac"
+elif sys.platform=="dos":
+    windll.Kernel32.GetStdHandle.restype = c_ulong
+    h = windll.Kernel32.GetStdHandle(c_ulong(0xfffffff5))
 
 ERROR_START="ERROR_____START"
 ERROR_END="ERROR_______END"
@@ -26,5 +31,8 @@ FONT_COLOR_DEFLUT=FONT_COLOR_WHITE
 
 
 def setFontColor(c):
-    global h
-    windll.Kernel32.SetConsoleTextAttribute(h,c)
+    if sys.platform=="dos":
+        global h
+        windll.Kernel32.SetConsoleTextAttribute(h,c)
+    else:
+        ()

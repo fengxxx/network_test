@@ -12,7 +12,7 @@ from _core import*
 # FONT_COLOR_DARKYELLOW=6
 # FONT_COLOR_DEFLUT=FONT_COLOR_WHITE
 #def runClient():
-class Client():  
+class Client():
     #setFontColor(FONT_COLOR_DEFLUT)
     setFontColor(FONT_COLOR_DARKGREEN)
     print ">>fengx client"
@@ -26,18 +26,18 @@ class Client():
     def __init__(self,host,port):
         self.HOST=host
         self.PORT=port
-        
+
         ADDR=(self.HOST,self.PORT)
-            
+
         self.TCP_Sock=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         self.TCP_Sock.connect(ADDR)
-        
+
         name=""
-        
+
         print ">>conect to : ",self.HOST,":",self.PORT
         print self.TCP_Sock.recv(1024)
         self.run()
-    def run(self): 
+    def run(self):
         while True:
             setFontColor(FONT_COLOR_DEFLUT)
             data=raw_input("")
@@ -83,7 +83,7 @@ class Client():
                 else:
                     recvDataType="COMAND"
                     goodCMD=True
-                    
+
                 if goodCMD:
                     self.TCP_Sock.sendall(data)
                     if recvDataType=="COMAND":
@@ -92,7 +92,7 @@ class Client():
                         print self.getFile(outFilePath)
                     setFontColor(FONT_COLOR_DEFLUT)
             else:()
-    
+
     def getMesage(self):
         data_start=self.TCP_Sock.recv(15)
         msg=""
@@ -127,7 +127,7 @@ class Client():
                     break
                 newFile.write(data_mid)
             msg=">>get file complite"
-            
+
         elif data_start==ERROR_START:
             setFontColor(FONT_COLOR_DARKRED)
             msg=">>Error: "
@@ -140,7 +140,7 @@ class Client():
         self.TCP_Sock.sendall("regist")
         setFontColor(FONT_COLOR_YELLOW)
         self.name=raw_input("name:")
-        
+
         self.TCP_Sock.send(self.name)
         password=raw_input("password:")
         self.TCP_Sock.send(password)
@@ -161,8 +161,7 @@ if __name__ == '__main__':
         # port =int(port)
     # else: port =9999
     # if host!="" :
-        
+
         # a=Client(host,port)
     # else:
         # a=Client("localhost",9999)
-                
