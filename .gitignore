@@ -1,2 +1,6 @@
 *.pyc
 *.DS_Store
+/socket_server/build
+/socket_server/dist
+*.spec
+*.pyc

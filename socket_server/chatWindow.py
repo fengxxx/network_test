@@ -4,11 +4,8 @@ reload(sys)
 sys.setdefaultencoding( "utf-8" )
 import wx
 from _globalData import *
-#from socket_client import chatClient
 from wx.lib.pubsub import pub
-
 from socket_client import *
-
 
 class mainFrame ( wx.Frame ):
     lastPos=[0,0]
@@ -29,17 +26,18 @@ class mainFrame ( wx.Frame ):
         self.SetBackgroundColour( UI_COLOR_MAIN_BG )
 
         self.tex_show = wx.TextCtrl(self, -1, "", size=(125, -1),style=wx.TE_MULTILINE|wx.TE_PROCESS_ENTER)
-        self.tex_input = wx.TextCtrl(self, -1, "input", size=(125, -1),style=wx.TE_MULTILINE|wx.TE_PROCESS_ENTER)
+        self.tex_input = wx.TextCtrl(self, -1, "", size=(125, -1),style=wx.TE_MULTILINE|wx.TE_PROCESS_ENTER)
         self.but_send = wx.Button(self, 10, "send", (20, 20))
         self.but_send.Bind(wx.EVT_BUTTON, self.OnClick_send)
         self.tex_show.SetBackgroundColour( UI_COLOR_MAIN_BG )
         self.tex_input.SetBackgroundColour( UI_COLOR_MAIN_BG )
 
+
         Sizer_main = wx.BoxSizer( wx.VERTICAL )
         Sizer_send = wx.BoxSizer( wx.HORIZONTAL )
         # self.p_moveBar.Layout()
+        self.Bind(wx.EVT_KEY_DOWN,self.OnKeyDown)
         # self.box_movebar.Fit( self.p_moveBar)
-
         Sizer_send.Add( self.tex_input, 7, wx.EXPAND |wx.ALL, 0 )
         Sizer_send.Add( self.but_send, 3, wx.EXPAND |wx.ALL, 0 )
         Sizer_main.Add( self.tex_show, 6, wx.EXPAND |wx.ALL, 0 )
@@ -53,12 +51,22 @@ class mainFrame ( wx.Frame ):
         pub.subscribe(self.recvMsgFromServer, "recvMsgToServer")
     def OnClick_send(self,event):
         #wx.CallAfter(pub.sendMessage , "test", msg=self.tex_input.GetValue())
-        wx.CallAfter(pub.sendMessage , "sendMsgToServer", msg="say|"+self.tex_input.GetValue())
-        #self.tex_show.WriteText("\n"+self.tex_input.GetValue())
+        if self.tex_input.GetValue()!="":
+            wx.CallAfter(pub.sendMessage , "sendMsgToServer", msg="say|"+self.tex_input.GetValue())
+            self.tex_input.SetValue("")
     def recvMsgFromServer(self,m):
         self.tex_show.WriteText("\n"+m)
     def regist(self,msg):
         wx.CallAfter(pub.sendMessage , "sendMsgToServer", msg="regist|"+self.tex_input.GetValue())
+    def OnKeyDown(self,event):
+        keycode = event.GetKeyCode()
+        ctrldown = event.ControlDown()
+        shiftdown = event.ShiftDown()
+        altdown = event.AltDown()
+        #if 32<=keycode<=126:
+        print keycode
+        if keycode==wx.WXK_NUMPAD_ENTER:
+            self.OnClick_send(event)
 
 class loginFrame ( wx.Frame ):
 

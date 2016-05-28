@@ -22,15 +22,10 @@ from wx.lib.pubsub import pub
 class chatClient():
     #setFontColor(FONT_COLOR_DEFLUT)
     setFontColor(FONT_COLOR_DARKGREEN)
-    print ">>fengx client"
-    #HOST="127.0.1.1"
     HOST='localhost'
     HOST='192.168.0.99'
-    HOST='localhost'
     if HOST=="":
-        #print "localhost"
         HOST='localhost'
-    #HOST="192.168.56.101"
     PORT=9999
     def __init__(self,host,port):
         self.HOST=host
@@ -43,17 +38,10 @@ class chatClient():
         #print self.TCP_Sock.recv(1024)
 
 class Client():
-    #setFontColor(FONT_COLOR_DEFLUT)
     setFontColor(FONT_COLOR_DARKGREEN)
-    print ">>fengx client"
-    #HOST="127.0.1.1"
-    HOST='localhost'
-    HOST='192.168.0.99'
     HOST='localhost'
     if HOST=="":
-        #print "localhost"
         HOST='localhost'
-    #HOST="192.168.56.101"
     PORT=9999
     def __init__(self,host,port):
         self.HOST=host
@@ -115,6 +103,8 @@ class Client():
 
 class ClientChread(Thread):
     host = "192.168.0.140"
+    host = "192.168.31.141"
+    host= socket.gethostbyname(socket.gethostname())
     client=Client(host,9999)
     def __init__(self):
         Thread.__init__(self)
