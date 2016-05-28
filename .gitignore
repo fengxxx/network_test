@@ -4,3 +4,5 @@
 /socket_server/dist
 *.spec
 *.pyc
+*.pyc
+socket_server/_core.pyc

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys,time
+import sys,time,random
 reload(sys)
 sys.setdefaultencoding( "utf-8" )
 import wx
@@ -69,15 +69,19 @@ class mainFrame ( wx.Frame ):
             self.OnClick_send(event)
 
 class loginFrame ( wx.Frame ):
-
+    host="minecraftfengx.wicp.net"
+    port=9999
+    names=("州","猪","小明","小亮","鱼","Rhino","Fengx","服务器_1","菠菜","土豆","外星人")
     def __init__( self, parent ):
-        wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"FengxEngine 1.0", pos = wx.DefaultPosition, size = wx.Size( 250,400 ), style =wx.DEFAULT_FRAME_STYLE  ) #wx.NO_BORDER|wx.TAB_TRAVERSAL ) #wx.RESIZE_BORDER|
+        wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"FengxEngine 1.0", pos = wx.DefaultPosition, size = wx.Size( 270,500 ), style =wx.DEFAULT_FRAME_STYLE  ) #wx.NO_BORDER|wx.TAB_TRAVERSAL ) #wx.RESIZE_BORDER|
         self.SetSizeHintsSz( wx.DefaultSize, wx.DefaultSize )
         self.SetForegroundColour( UI_COLOR_MAIN_FG )
         self.SetBackgroundColour( UI_COLOR_MAIN_BG )
-        n=("曾哥_"+str(time.time()))
-        self.tex_input = wx.TextCtrl(self, -1, n,size=(200,30),style=wx.TE_MULTILINE|wx.TE_PROCESS_ENTER)
+
+        self.tex_input = wx.TextCtrl(self, -1, self.names[random.randint(0,len(self.names))],size=(200,30),style=wx.TE_MULTILINE|wx.TE_PROCESS_ENTER)
+        self.tex_host = wx.TextCtrl(self, -1, self.host,size=(200,30),style=wx.TE_MULTILINE|wx.TE_PROCESS_ENTER)
         self.tex_input.SetPosition((25,25))
+        self.tex_host.SetPosition((25,70))
         self.but_send = wx.Button(self, 10, "登陆")
         self.but_send.SetPosition((25,230))
         self.but_send.SetSize((200,180))
@@ -86,9 +90,13 @@ class loginFrame ( wx.Frame ):
 
     def regist(self,msg):
         global mainWindow
+        self.host=self.tex_host.GetValue()
+        c=ClientChread(self.host,self.port)
+        c.start()
         wx.CallAfter(pub.sendMessage , "sendMsgToServer", msg="regist|"+self.tex_input.GetValue())
         self.Show(False)
         mainWindow.Show()
+
 
 if __name__=='__main__':
     mainApp = wx.App()
@@ -96,5 +104,5 @@ if __name__=='__main__':
     loginWindow=loginFrame(parent=None)
     loginWindow.Show()
     #mainWindow.Show()
-    ClientChread()
+
     mainApp.MainLoop()

@@ -6,36 +6,6 @@ import socket,os,time,sys,wx
 from _core import*
 from threading import Thread
 from wx.lib.pubsub import pub
-# FONT_COLOR_RED=12
-# FONT_COLOR_DARKRED=4
-# FONT_COLOR_BLUE=9
-# FONT_COLOR_DARKBLUE=1
-# FONT_COLOR_GREEN=10
-# FONT_COLOR_DARKGREEN=2
-# FONT_COLOR_WHITE=15
-# FONT_COLOR_GRAY=8
-# FONT_COLOR_YELLOW=14
-# FONT_COLOR_DARKYELLOW=6
-# FONT_COLOR_DEFLUT=FONT_COLOR_WHITE
-#def runClient():
-
-class chatClient():
-    #setFontColor(FONT_COLOR_DEFLUT)
-    setFontColor(FONT_COLOR_DARKGREEN)
-    HOST='localhost'
-    HOST='192.168.0.99'
-    if HOST=="":
-        HOST='localhost'
-    PORT=9999
-    def __init__(self,host,port):
-        self.HOST=host
-        self.PORT=port
-        ADDR=(self.HOST,self.PORT)
-        self.TCP_Sock=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        self.TCP_Sock.connect(ADDR)
-        name=""
-        print ">>conect to : ",self.HOST,":",self.PORT
-        #print self.TCP_Sock.recv(1024)
 
 class Client():
     setFontColor(FONT_COLOR_DARKGREEN)
@@ -102,20 +72,23 @@ class Client():
         print "send:",t
 
 class ClientChread(Thread):
-    host = "192.168.0.140"
-    host = "192.168.31.141"
+    #host = "192.168.0.140"
+    #host = "192.168.31.141"
     host= socket.gethostbyname(socket.gethostname())
-    client=Client(host,9999)
-    def __init__(self):
+    port=9999
+    def __init__(self,host,port):
         Thread.__init__(self)
-        self.start()
+        self.host=host
+        self.port=port
+        self.client=Client(self.host,self.port)
+        #self.start()
     def run(self):
         self.client.run()
 
-if __name__ == '__main__':
-    host = "192.168.31.141"
-    if socket.gethostname()=="fengx-PC":
-        host = "192.168.31.141"
-    else:
-        host = "192.168.0.140"
-    a=Client(host,9999)
+#if __name__ == '__main__':
+# host = "192.168.31.141"
+# if socket.gethostname()=="fengx-PC":
+#     host = "192.168.31.141"
+# else:
+#     host = "192.168.0.140"
+# a=Client(host,9999)
