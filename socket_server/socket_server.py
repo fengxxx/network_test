@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+import sys
+reload(sys)
+sys.setdefaultencoding( "utf-8" )
 import SocketServer
 from SocketServer import StreamRequestHandler as SRH
 from time import ctime
@@ -14,76 +18,44 @@ class Servers(SRH):
         # setFontColor(FONT_COLOR_DARKGREEN)
         connections.append(self);
         print 'got connection from ',self.client_address
-        self.wfile.write('>>connection %s:%s at %s succeed!' % (host,self.client_address[1],ctime()))
+        #loginMsg=('>>connection %s:%s at %s succeed!' % (host,self.client_address[1],ctime()))
+
         # setFontColor(FONT_COLOR_DEFLUT)
         while True:
+            data=""
             try:
                 data = self.request.recv(1024)
             except:
-                print self.client_address," is leav!"
-                connections.remove (self);
+                print self.name," is leav!"
+                #loginMsg=('wellcome <%s> %s:%s at %s was leaved the chat room!' % (self.name,self.client_address[0],self.client_address[1],ctime()))
+                #self.broadcastMesg(loginMsg)
+                #connections.remove (self);
             if not data:
+                print self.name," is leav!"
+                loginMsg=('<%s> %s:%s at %s was leaved the chat room!' % (self.name,self.client_address[0],self.client_address[1],ctime()))
+                self.broadcastMesg(loginMsg)
+                connections.remove (self);
                 break
-
             setFontColor(FONT_COLOR_YELLOW)
             if self.name!="noname":
                 print "-->>from: ", self.name
             else:
                 print "-->>from: ", self.client_address
-            # setFontColor(FONT_COLOR_DEFLUT)
             print data
             if data!="" and data!=None:
                 setFontColor(FONT_COLOR_DARKGREEN)
-                dataSplite=data.split()
-                print("====:",data)
-                self.broadcastMesg(("say:"+data))
-                # if dataSplite[0]=="getFile":
-                #     filePath=""
-                #     if len(dataSplite)==1:
-                #         self.sendError("get file from server! 2 values need ! :  getFile <filePath> <outFilePath>")
-                #     elif len(dataSplite)==2 or len(dataSplite)==3:
-                #         print "sendBackFile: ",self.sendFile(dataSplite[1])
-                #     else:
-                #         print "sendBackError: ",self.sendError("input too more values! only 2 enough. : getFile <filePath> <outFilePath>")
-                # elif dataSplite[0]=="regist" and data=="regist":
-                #     if len(dataSplite)==1:
-                #         print ">> regist: ",self.client_address
-                #         self.regist()
-                #     else: print "sendBackError: ",self.sendError("input too more values! : regist")
-                # elif dataSplite[0]=="myName" and data=="myName":
-                #     self.getName()
-                # elif dataSplite[0]=="/sendAll" and data=="/sendAll":
-                #     print "test++++++++"
-                #     self.broadcastMesg("test*21241241!!!!");
-                # else:
-                #     self.broadcastMesg("test*21241241!!!!");
-                #     # msg=os.popen(data).read()
-                #     # if msg=="" or msg==None:
-                #     #     msg="'"+data+"'"+": is not recognized as an internal or external command"
-                #     #     print "sendBackError: ",self.sendError(msg)
-                #     # else: print "sendMesge: ",self.sendMesge(msg)
+                ds=data.split("|")
+                if ds.count>1:
+                    if ds[0]=="say":
+                        self.broadcastMesg(self.name+":"+ds[1])
+                    elif ds[0]=="regist":
+                        self.name=ds[1]
+                        loginMsg=('wellcome  <%s> %s:%s at %s add chat room!' % (self.name,self.client_address[0],self.client_address[1],ctime()))
+                        self.broadcastMesg(loginMsg)
+
     def getName(self):
         self.sendMesge((self.name+":"+self.password))
-    def sendMesge(self,msg):
-        #print "sendMesge"
-        self.request.send(msg)
-        # if msg!="" and msg!=None:
-        #     self.request.send(DATA_MSG_START)
-        #     self.request.send(msg)
-        #     time.sleep(0.5)
-        #     self.request.send(DATA_MSG_END)
-        #     return True
-        # else:return False
-    def sendError(self,err):
-        #print "sendError"
-        self.request.send(err)
-        # if err!="" and err!=None:
-        #     self.request.send(ERROR_START)
-        #     self.request.send(err)
-        #     time.sleep(0.5)
-        #     self.request.send(ERROR_END)
-        #     return True
-        # return False
+
     def sendFile(self,filePath):
         #print "sendFile"
         if os.path.isfile(filePath):
@@ -97,25 +69,14 @@ class Servers(SRH):
         else:
             self.sendError("file is not exit!")
             return False
-    def regist(self):
-        #self.sendMesge(REGIST_GIVE)
-        print ">>get name: "
-        self.name = self.request.recv(30)
-        print ">>get password: "
-        self.password=self.request.recv(30)
-        print ">>regist succeed "
-        self.sendMesge(("regist succeed \n>>Congratulations to you :"+self.name))
+
     def broadcastMesg(self,msg):
         print ("broadcastMesg: ",msg)
         for s in connections:
-            s.request.send(msg)
-            # if msg!="" and msg!=None:
-            #     s.request.send(DATA_MSG_START)
-            #     s.request.send(msg)
-            #     time.sleep(0.5)
-            #     s.request.send(DATA_MSG_END)
-            #     return True
-            # else:return False
+            try:
+                s.request.send(msg)
+            except Exception as e:
+                print "lost men:",e
 
 if __name__ == '__main__':
     print serverName," ",Version," initialization is starting....."
@@ -123,7 +84,7 @@ if __name__ == '__main__':
     if socket.gethostname()=="fengx-PC":
         host = "192.168.31.141"
     else:
-        host = "192.168.0.99"
+        host = "192.168.0.140"
     port = 9999
     addr = (host,port)
     server = SocketServer.ThreadingTCPServer(addr,Servers)

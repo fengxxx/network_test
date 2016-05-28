@@ -1,5 +1,11 @@
-import socket,os,time,sys
+# -*- coding: utf-8 -*-
+import sys
+reload(sys)
+sys.setdefaultencoding( "utf-8" )
+import socket,os,time,sys,wx
 from _core import*
+from threading import Thread
+from wx.lib.pubsub import pub
 # FONT_COLOR_RED=12
 # FONT_COLOR_DARKRED=4
 # FONT_COLOR_BLUE=9
@@ -57,93 +63,17 @@ class Client():
         self.TCP_Sock.connect(ADDR)
         name=""
         print ">>conect to : ",self.HOST,":",self.PORT
-        print self.TCP_Sock.recv(1024)
-        self.run()
+        #print self.TCP_Sock.recv(1024)
+        #self.run()
+        pub.subscribe(self.sendMsgToServer, "sendMsgToServer")
+
     def run(self):
         while True:
-            setFontColor(FONT_COLOR_DEFLUT)
-            #data=raw_input("")
-            msg=self.getMesage()
-            print(msg)
-            print "sss"
-            data = sys.stdin.readline()
-
+            data=self.TCP_Sock.recv(1024)
             if data!="" and data!=None:
-                dataSplite=data.split()
-                # if len(dataSplite)!=0:
-                #     sys.stdout.write("len(dataSplite)")
-                goodCMD=False
-                recvDataType="MESAGE"
-                # if dataSplite[0]=="getFile":
-                #     filePath=""
-                #     outFilePath="temp"
-                #     if len(dataSplite)==1:
-                #         setFontColor(FONT_COLOR_DARKRED)
-                #         print "get file from server! 2 values need !   getFile <filePath> <outFilePath>"
-                #         setFontColor(FONT_COLOR_DEFLUT)
-                #     elif len(dataSplite)==2:
-                #         if os.path.isfile(dataSplite[1]):
-                #             setFontColor(FONT_COLOR_DARKRED)
-                #             print "there is  a  same name file!"
-                #             setFontColor(FONT_COLOR_DEFLUT)
-                #         else:
-                #             filePath=dataSplite[1]
-                #             outFilePath=dataSplite[1]
-                #             recvDataType="FILE"
-                #             goodCMD=True
-                #     elif len(dataSplite)==3:
-                #         if os.path.isfile(dataSplite[2]):
-                #             setFontColor(FONT_COLOR_DARKRED)
-                #             print "there is  a  same name file!"
-                #             setFontColor(FONT_COLOR_DEFLUT)
-                #         else:
-                #             filePath=dataSplite[1]
-                #             outFilePath=dataSplite[2]
-                #             recvDataType="FILE"
-                #             goodCMD=True
-                #     else:
-                #         print "input too more values! only 2 enough.  getFile <filePath> <outFilePath>"
-                # elif dataSplite[0]=="regist":
-                #     if len(dataSplite)==1 and data=="regist":
-                #         print ">>input your name and password"
-                #         self.regist()
-                #     else: print ("input too more values! : regist")
-                # elif dataSplite[0]=="exit()" and data=="exit()": sys.exit()
-                # else:
-                #     recvDataType="COMAND"
-                #     goodCMD=True
-                #
-                self.TCP_Sock.sendall(data)
-                print data
-                # if recvDataType=="COMAND":
-                #     print self.getMesage()
-                # elif recvDataType=="FILE":
-                #     print self.getFile(outFilePath)
-                #     #setFontColor(FONT_COLOR_DEFLUT)
-                # else:print  self.getMesage()
-            else:()
+                wx.CallAfter(pub.sendMessage , "recvMsgToServer", m=data)
+            setFontColor(FONT_COLOR_DEFLUT)
 
-
-    def getMesage(self):
-        return self.TCP_Sock.recv(1024)
-        # data_start=self.TCP_Sock.recv(15)
-        # msg=""
-        # if data_start==ERROR_START:
-        #     setFontColor(FONT_COLOR_DARKRED)
-        #     msg=">>Error: "
-        #     while True:
-        #         data_mid=self.TCP_Sock.recv(1024)
-        #         if data_mid==ERROR_END:break
-        #         msg+=data_mid
-        #     return msg
-        # elif data_start==DATA_MSG_START:
-        #     setFontColor(FONT_COLOR_DARKGREEN)
-        #     msg=">>"
-        #     while True:
-        #         data_mid=self.TCP_Sock.recv(1024)
-        #         if data_mid==DATA_MSG_END:break
-        #         msg+=data_mid
-        #     return msg
     def getFile(self,outFilePath):
         data_start=self.TCP_Sock.recv(15)
         msg=""
@@ -178,11 +108,24 @@ class Client():
         self.TCP_Sock.send(password)
         print self.getMesage()
         setFontColor(FONT_COLOR_DEFLUT)
+    def sendMsgToServer(self,msg):
+        t=msg
+        self.TCP_Sock.send(t)
+        print "send:",t
+
+class ClientChread(Thread):
+    host = "192.168.0.140"
+    client=Client(host,9999)
+    def __init__(self):
+        Thread.__init__(self)
+        self.start()
+    def run(self):
+        self.client.run()
 
 if __name__ == '__main__':
     host = "192.168.31.141"
     if socket.gethostname()=="fengx-PC":
         host = "192.168.31.141"
     else:
-        host = "192.168.0.99"
+        host = "192.168.0.140"
     a=Client(host,9999)

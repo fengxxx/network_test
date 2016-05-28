@@ -4,7 +4,7 @@ import time
 import wx
 from threading import Thread
 from wx.lib.pubsub import pub
-#import lib.pubsub.core.publisherbase.Publisher as Publisher
+
 
 class TestThread(Thread):
     def __init__(self):
